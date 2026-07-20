@@ -1,2 +1,22 @@
 # log-stream
-Distributed Log Analytics Platform built with Spring Boot
+# Log Stream
+
+Distributed Log Analytics & Alerting Platform
+
+## Team Members
+
+- SHIFA AHMED
+- Member 2
+- Member 3
+- Member 4
+- Member 5
+- Member 6
+
+## Tech Stack
+
+- Java
+- Spring Boot
+- Apache Lucene
+- gRPC
+- PostgreSQL
+- React
