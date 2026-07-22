@@ -20,13 +20,18 @@ public class LogServiceImpl implements LogService {
 
 
     @Override
+    // saving all log here
     public LogResponse saveLog(LogRequest request) {
-        return null;
+
+        Log log = LogMapper.toEntity(request);
+        Log savedLog = logRepository.save(log);
+        return LogMapper.toResponse(savedLog);
     }
 
     @Override
     public List<LogResponse> getAllLogs() {
         return List.of();
+
     }
 
     @Override
