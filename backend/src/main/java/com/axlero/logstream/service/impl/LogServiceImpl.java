@@ -31,12 +31,14 @@ public class LogServiceImpl implements LogService {
     @Override
     public List<LogResponse> getAllLogs() {
         return List.of();
-
     }
 
     @Override
     public LogResponse getLogById(Long id) {
-        return null;
+        return return logRepository.findAll()
+                .stream()
+                .map(LogMapper::toResponse) // log -> LogMapper.toResponse(log
+                .toList();
     }
 
     @Override
