@@ -51,6 +51,8 @@ public class LogServiceImpl implements LogService {
 
     @Override
     public void deleteLog(Long id) {
-
+     Log log = logRepository.findById(id)
+             .orElseThrow(()-> new ResourceNotFoundException("Log not found with id : "+id));
+     logRepository.deleteById(id);
     }
 }
