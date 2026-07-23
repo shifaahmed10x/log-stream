@@ -9,10 +9,10 @@ import com.axlero.logstream.repository.LogRepository;
 import com.axlero.logstream.service.LogService;
 import org.springframework.stereotype.Service;
 
-import java.lang.module.ResolutionException;
 import java.util.List;
-import java.util.Optional;
-
+/*
+        Implemented LogService interface
+*/
 @Service
 public class LogServiceImpl implements LogService {
      // here we had use Constructor Injection instead of @Autowired
