@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.management.DescriptorKey;
 import java.util.List;
 
 @RestController
@@ -32,7 +33,23 @@ public class LogController {
         return ResponseEntity.ok(logs);
     }
 
+    @GetMapping("/{id}")
+   public ResponseEntity<LogResponse> getLogById(@PathVariable Long id){
+        LogResponse response = logService.getLogById(id);
+        return ResponseEntity.ok(response);
+    }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteLog(@PathVariable Long id){
+        logService.deleteLog(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<LogResponse> updateLog(@PathVariable Long id , @RequestBody LogRequest request){
+        LogResponse response = logService.updateLog(id,request);
+        return ResponseEntity.ok(response);
+    }
 
 
 }

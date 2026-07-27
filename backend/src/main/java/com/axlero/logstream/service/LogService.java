@@ -12,5 +12,6 @@ public interface LogService {
     List<LogResponse> getAllLogs();
     LogResponse getLogById(Long id);
     void deleteLog(Long id);
+    LogResponse updateLog(Long id , LogRequest request);
 
 }

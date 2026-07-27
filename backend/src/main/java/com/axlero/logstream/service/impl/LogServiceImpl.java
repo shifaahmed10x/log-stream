@@ -55,4 +55,21 @@ public class LogServiceImpl implements LogService {
              .orElseThrow(()-> new ResourceNotFoundException("Log not found with id : "+id));
      logRepository.deleteById(id);
     }
+
+    @Override
+    public LogResponse updateLog(Long id, LogRequest request) {
+        Log log = logRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Log not found with id : "+id));
+        log.setApplicationName(request.getApplicationName());
+        log.setServiceName(request.getServiceName());
+        log.setHostName(request.getHostName());
+        log.setLogLevel(request.getLogLevel());
+        log.setMessage(request.getMessage());
+        log.setLoggerName(request.getLoggerName());
+        log.setThreadName(request.getThreadName());
+        log.setTimestamp(request.getTimestamp());
+
+        Log updatedLog = logRepository.save(log);
+        return LogMapper.toResponse(updatedLog);
+
+    }
 }
