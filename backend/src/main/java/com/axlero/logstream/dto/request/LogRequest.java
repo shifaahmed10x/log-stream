@@ -14,25 +14,25 @@ import java.time.LocalDateTime;
 @Builder
 public class LogRequest {
 
-    @NotBlank
+    @NotBlank(message = "Application name is required")
     private String applicationName;
 
-    @NotBlank
+    @NotBlank(message = "Service name is required")
     private String serviceName;
 
-    @NotBlank
+    @NotBlank(message = "Host name is required")
     private String hostName;
 
-    @NotNull
+    @NotNull(message = "Log level is required")
     private LogLevel logLevel;
 
-    @NotBlank
+    @NotBlank(message = "Message is required")
     private String message;
+
+    @NotNull(message = "Timestamp is required")
+    private LocalDateTime timestamp;
 
     private String loggerName;
 
     private String threadName;
-
-    @NotNull
-    private LocalDateTime timestamp;
 }
