@@ -4,6 +4,7 @@ import com.axlero.logstream.dto.request.LogRequest;
 import com.axlero.logstream.dto.response.LogResponse;
 import com.axlero.logstream.entity.Log;
 import com.axlero.logstream.service.LogService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,7 @@ public class LogController {
     }
 
     @PostMapping
-    public ResponseEntity<LogResponse>  saveLog (@RequestBody LogRequest logRequest){
+    public ResponseEntity<LogResponse>  saveLog ( @Valid @RequestBody LogRequest logRequest){
         LogResponse response = logService.saveLog(logRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
@@ -46,10 +47,9 @@ public class LogController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<LogResponse> updateLog(@PathVariable Long id , @RequestBody LogRequest request){
+    public ResponseEntity<LogResponse> updateLog(@PathVariable Long id , @Valid @RequestBody LogRequest request){
         LogResponse response = logService.updateLog(id,request);
         return ResponseEntity.ok(response);
     }
-
 
 }
