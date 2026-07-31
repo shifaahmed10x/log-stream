@@ -9,7 +9,8 @@ import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 /**
- * Represents a single log entry received by the Log Stream platform.
+ * Represents a single log entry received by the Log Stream platform
+ *shifa-ahmed.
  */
 
 @Entity
@@ -52,5 +53,4 @@ public class Log {
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
-
 }
