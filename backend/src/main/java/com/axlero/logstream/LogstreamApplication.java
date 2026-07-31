@@ -12,5 +12,4 @@ public class LogstreamApplication {
 		SpringApplication.run(LogstreamApplication.class, args);
 		System.out.println("Run Successfully");
 	}
-
 }
