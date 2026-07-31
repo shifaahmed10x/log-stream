@@ -8,6 +8,14 @@ import com.axlero.logstream.mapper.LogMapper;
 import com.axlero.logstream.repository.LogRepository;
 import com.axlero.logstream.service.LogService;
 import org.springframework.stereotype.Service;
+import com.axlero.logstream.dto.request.SearchRequest;
+import com.axlero.logstream.dto.response.SearchResponse;
+import com.axlero.logstream.specification.LogSpecification;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
 /*
@@ -71,5 +79,37 @@ public class LogServiceImpl implements LogService {
         Log updatedLog = logRepository.save(log);
         return LogMapper.toResponse(updatedLog);
 
+    }
+    @Override
+    public SearchResponse searchLogs(SearchRequest request) {
+
+        Specification<Log> specification = LogSpecification.search(request);
+
+        Sort sort = "desc".equalsIgnoreCase(request.getSortDirection())
+                ? Sort.by(request.getSortBy()).descending()
+                : Sort.by(request.getSortBy()).ascending();
+
+        Pageable pageable = PageRequest.of(
+                request.getPage(),
+                request.getPageSize(),
+                sort
+        );
+
+        Page<Log> logs = logRepository.findAll(specification, pageable);
+
+        List<LogResponse> logResponses = logs.getContent()
+                .stream()
+                .map(LogMapper::toResponse)
+                .toList();
+
+        return SearchResponse.builder()
+                .logs(logResponses)
+                .totalRecords(logs.getTotalElements())
+                .totalPages(logs.getTotalPages())
+                .currentPage(logs.getNumber())
+                .pageSize(logs.getSize())
+                .first(logs.isFirst())
+                .last(logs.isLast())
+                .build();
     }
 }

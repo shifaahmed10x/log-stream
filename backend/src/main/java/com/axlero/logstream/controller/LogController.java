@@ -16,6 +16,8 @@ import java.util.List;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import com.axlero.logstream.dto.request.SearchRequest;
+import com.axlero.logstream.dto.response.SearchResponse;
 
 @RestController
 @RequestMapping("/api/logs")
@@ -114,6 +116,19 @@ public class LogController {
     @PutMapping("/{id}")
     public ResponseEntity<LogResponse> updateLog(@PathVariable Long id , @Valid @RequestBody LogRequest request){
         LogResponse response = logService.updateLog(id,request);
+        return ResponseEntity.ok(response);
+    }
+    @Operation(
+            summary = "Search Logs",
+            description = "Search logs using keyword, filters, sorting and pagination"
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Logs retrieved successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid search request")
+    })
+    @PostMapping("/search")
+    public ResponseEntity<SearchResponse> searchLogs(@Valid @RequestBody SearchRequest request) {
+        SearchResponse response = logService.searchLogs(request);
         return ResponseEntity.ok(response);
     }
 
