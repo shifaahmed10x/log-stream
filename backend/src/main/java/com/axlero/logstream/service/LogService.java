@@ -20,4 +20,5 @@ public interface LogService {
     void deleteLog(Long id);
 
     SearchResponse searchLogs(SearchRequest request);
+    List<LogResponse> searchMessage(String keyword);
 }

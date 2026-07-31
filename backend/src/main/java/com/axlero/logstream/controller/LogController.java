@@ -16,6 +16,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import com.axlero.logstream.dto.request.SearchRequest;
 import com.axlero.logstream.dto.response.SearchResponse;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/api/logs")
@@ -131,6 +132,13 @@ public class LogController {
     public ResponseEntity<SearchResponse> searchLogs(@Valid @RequestBody SearchRequest request) {
         SearchResponse response = logService.searchLogs(request);
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/search/message")
+    public ResponseEntity<List<LogResponse>> searchMessage(
+            @RequestParam String keyword) {
+
+        return ResponseEntity.ok(logService.searchMessage(keyword));
     }
 
 }

@@ -124,4 +124,13 @@ public class LogServiceImpl implements LogService {
                 .last(logs.isLast())
                 .build();
     }
+    @Override
+    public List<LogResponse> searchMessage(String keyword) {
+
+        try {
+            return luceneIndexService.searchByMessage(keyword);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
