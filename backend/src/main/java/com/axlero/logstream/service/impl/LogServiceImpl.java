@@ -16,18 +16,24 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import com.axlero.logstream.service.LuceneIndexService;
 
 import java.util.List;
+
 /*
         Implemented LogService interface
 */
 @Service
 public class LogServiceImpl implements LogService {
-     // here we had use Constructor Injection instead of @Autowired
+    // here we had use Constructor Injection instead of @Autowired
     private final LogRepository logRepository;
+    private final LuceneIndexService luceneIndexService;
 
-    public LogServiceImpl(LogRepository logRepository){
-        this.logRepository=logRepository;
+    public LogServiceImpl(LogRepository logRepository,
+                          LuceneIndexService luceneIndexService) {
+
+        this.logRepository = logRepository;
+        this.luceneIndexService = luceneIndexService;
     }
 
 
@@ -37,12 +43,17 @@ public class LogServiceImpl implements LogService {
 
         Log log = LogMapper.toEntity(request);
         Log savedLog = logRepository.save(log);
+        try {
+            luceneIndexService.indexLog(savedLog);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to index log in Lucene", e);
+        }
         return LogMapper.toResponse(savedLog);
     }
 
     @Override
     public List<LogResponse> getAllLogs() {
-         return logRepository.findAll()
+        return logRepository.findAll()
                 .stream()
                 .map(LogMapper::toResponse) // log -> LogMapper.toResponse(log
                 .toList();
@@ -51,22 +62,22 @@ public class LogServiceImpl implements LogService {
     @Override
     public LogResponse getLogById(Long id) {
 
-       Log log = logRepository.findById(id)
-               .orElseThrow(()-> new ResourceNotFoundException("Log not found with id : "+ id));
+        Log log = logRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Log not found with id : " + id));
 
-       return  LogMapper.toResponse(log);
+        return LogMapper.toResponse(log);
     }
 
     @Override
     public void deleteLog(Long id) {
-     Log log = logRepository.findById(id)
-             .orElseThrow(()-> new ResourceNotFoundException("Log not found with id : "+id));
-     logRepository.deleteById(id);
+        Log log = logRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Log not found with id : " + id));
+        logRepository.deleteById(id);
     }
 
     @Override
     public LogResponse updateLog(Long id, LogRequest request) {
-        Log log = logRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Log not found with id : "+id));
+        Log log = logRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Log not found with id : " + id));
         log.setApplicationName(request.getApplicationName());
         log.setServiceName(request.getServiceName());
         log.setHostName(request.getHostName());
@@ -80,6 +91,7 @@ public class LogServiceImpl implements LogService {
         return LogMapper.toResponse(updatedLog);
 
     }
+
     @Override
     public SearchResponse searchLogs(SearchRequest request) {
 

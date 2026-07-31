@@ -2,17 +2,15 @@ package com.axlero.logstream.controller;
 
 import com.axlero.logstream.dto.request.LogRequest;
 import com.axlero.logstream.dto.response.LogResponse;
-import com.axlero.logstream.entity.Log;
 import com.axlero.logstream.service.LogService;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.management.DescriptorKey;
 import java.util.List;
+
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -28,6 +26,7 @@ import com.axlero.logstream.dto.response.SearchResponse;
 public class LogController {
 
     private final LogService logService;
+
     public LogController(LogService logService) {
         this.logService = logService;
     }
@@ -41,7 +40,7 @@ public class LogController {
             description = "Log created successfully"
     )
     @PostMapping
-    public ResponseEntity<LogResponse>  saveLog ( @Valid @RequestBody LogRequest logRequest){
+    public ResponseEntity<LogResponse> saveLog(@Valid @RequestBody LogRequest logRequest) {
         LogResponse response = logService.saveLog(logRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
@@ -55,7 +54,7 @@ public class LogController {
             description = "Logs retrieved successfully"
     )
     @GetMapping
-    public ResponseEntity<List<LogResponse>> getAllLogs(){
+    public ResponseEntity<List<LogResponse>> getAllLogs() {
         List<LogResponse> logs = logService.getAllLogs();
         return ResponseEntity.ok(logs);
     }
@@ -75,7 +74,7 @@ public class LogController {
             )
     })
     @GetMapping("/{id}")
-   public ResponseEntity<LogResponse> getLogById(@PathVariable Long id){
+    public ResponseEntity<LogResponse> getLogById(@PathVariable Long id) {
         LogResponse response = logService.getLogById(id);
         return ResponseEntity.ok(response);
     }
@@ -95,10 +94,11 @@ public class LogController {
             )
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteLog(@PathVariable Long id){
+    public ResponseEntity<Void> deleteLog(@PathVariable Long id) {
         logService.deleteLog(id);
         return ResponseEntity.noContent().build();
     }
+
     @Operation(
             summary = "Update log",
             description = "Updates an existing log entry"
@@ -114,10 +114,11 @@ public class LogController {
             )
     })
     @PutMapping("/{id}")
-    public ResponseEntity<LogResponse> updateLog(@PathVariable Long id , @Valid @RequestBody LogRequest request){
-        LogResponse response = logService.updateLog(id,request);
+    public ResponseEntity<LogResponse> updateLog(@PathVariable Long id, @Valid @RequestBody LogRequest request) {
+        LogResponse response = logService.updateLog(id, request);
         return ResponseEntity.ok(response);
     }
+
     @Operation(
             summary = "Search Logs",
             description = "Search logs using keyword, filters, sorting and pagination"

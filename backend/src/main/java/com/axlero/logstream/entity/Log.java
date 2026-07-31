@@ -6,15 +6,16 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+
 import java.time.LocalDateTime;
 
 /**
  * Represents a single log entry received by the Log Stream platform
- *shifa-ahmed.
+ * shifa-ahmed.
  */
 
 @Entity
-@Table(name="logs")
+@Table(name = "logs")
 @Getter
 @Setter
 @NoArgsConstructor
