@@ -1,3 +1,4 @@
+
 package com.axlero.logstream.service.impl;
 import com.axlero.logstream.dto.request.LogRequest;
 import com.axlero.logstream.dto.request.SearchRequest;
@@ -13,57 +14,86 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import com.axlero.logstream.mapper.LogMapper;
+import com.axlero.logstream.exception.ResourceNotFoundException;
 
 import java.util.List;
-
+/*
+        Implemented LogService interface
+*/
 @Service
 public class LogServiceImpl implements LogService{
+
+    // here we had use Constructor Injection instead of @Autowired
 
     private final LogRepository logRepository;
     public LogServiceImpl(LogRepository logRepository) {
         this.logRepository= logRepository;
     }
     @Override
-    public LogResponse saveLog(LogRequest request){
-        return null;
+    // saving all log here
+    public LogResponse saveLog(LogRequest request) {
+
+        Log log = LogMapper.toEntity(request);
+        Log savedLog = logRepository.save(log);
+        return LogMapper.toResponse(savedLog);
     }
+
     @Override
-    public List<LogResponse> getAllLogs(){
-        return List.of();
+    public List<LogResponse> getAllLogs() {
+        return logRepository.findAll()
+                .stream()
+                .map(LogMapper::toResponse) // log -> LogMapper.toResponse(log
+                .toList();
     }
+
     @Override
-    public LogResponse getLogById(Long id){
-        return null;
+    public LogResponse getLogById(Long id) {
+
+        Log log = logRepository.findById(id)
+                .orElseThrow(()-> new ResourceNotFoundException("Log not found with id : "+ id));
+
+        return  LogMapper.toResponse(log);
     }
+
     @Override
-    public void deleteLog(Long id){
+    public void deleteLog(Long id) {
+        Log log = logRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Log not found with id : " + id));
+        logRepository.delete(log);
+    }
+
+    @Override
+    public LogResponse updateLog(Long id, LogRequest request) {
+        Log log = logRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Log not found with id : "+id));
+        log.setApplicationName(request.getApplicationName());
+        log.setServiceName(request.getServiceName());
+        log.setHostName(request.getHostName());
+        log.setLogLevel(request.getLogLevel());
+        log.setMessage(request.getMessage());
+        log.setLoggerName(request.getLoggerName());
+        log.setThreadName(request.getThreadName());
+        log.setTimestamp(request.getTimestamp());
+
+        Log updatedLog = logRepository.save(log);
+        return LogMapper.toResponse(updatedLog);
 
     }
     @Override
     public SearchResponse searchLogs(SearchRequest request){
         Specification<Log> specification = LogSpecification.search(request);
 
-        Sort sort = request.getSortDirection().equalsIgnoreCase("desc")
+        Sort sort = "desc".equalsIgnoreCase(request.getSortDirection())
                 ? Sort.by(request.getSortBy()).descending()
                 : Sort.by(request.getSortBy()).ascending();
 
         Pageable pageable = PageRequest.of(request.getPage(), request.getPageSize(), sort);
         Page<Log> logs = logRepository.findAll(specification, pageable);
-        List<LogResponse> logResponses = logs.getContent().stream()
-                .map(log -> LogResponse.builder()
-                        .id(log.getId())
-                        .applicationName(log.getApplicationName())
-                        .serviceName(log.getServiceName())
-                        .hostName(log.getHostName())
-                        .logLevel(log.getLogLevel())
-                        .message(log.getMessage())
-                        .loggerName(log.getLoggerName())
-                        .threadName(log.getThreadName())
-                        .timestamp(log.getTimestamp())
-                        .createdAt(log.getCreatedAt())
-                        .build()
-                )
+        List<LogResponse> logResponses = logs.getContent()
+                .stream()
+                .map(LogMapper::toResponse)
                 .toList();
+
         return  SearchResponse.builder()
                 .logs(logResponses)
                 .totalRecords(logs.getTotalElements())
