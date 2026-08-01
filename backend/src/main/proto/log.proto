@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.axlero.logstream.grpc";
+option java_outer_classname = "LogProto";
+
+package logstream;
+
+service LogService {
+
+  rpc SaveLog (GrpcLogRequest) returns (GrpcLogResponse);
+
+}
+
+message GrpcLogRequest {
+
+  string applicationName = 1;
+  string serviceName = 2;
+  string hostName = 3;
+  string logLevel = 4;
+  string message = 5;
+  string timestamp = 6;
+  string loggerName = 7;
+  string threadName = 8;
+
+}
+
+message GrpcLogResponse {
+
+  int64 id = 1;
+  string message = 2;
+
+}
