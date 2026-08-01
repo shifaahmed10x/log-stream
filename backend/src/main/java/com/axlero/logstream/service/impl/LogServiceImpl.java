@@ -18,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import com.axlero.logstream.service.LuceneIndexService;
+import com.axlero.logstream.service.WebSocketService;
 
 import java.util.List;
 
@@ -30,15 +31,18 @@ public class LogServiceImpl implements LogService {
     private final LogRepository logRepository;
     private final LuceneIndexService luceneIndexService;
     private final AlertService alertService;
+    private final WebSocketService webSocketService;
 
     public LogServiceImpl(
             LogRepository logRepository,
             LuceneIndexService luceneIndexService,
-            AlertService alertService) {
+            AlertService alertService,
+            WebSocketService webSocketService) {
 
         this.logRepository = logRepository;
         this.luceneIndexService = luceneIndexService;
         this.alertService = alertService;
+        this.webSocketService = webSocketService;
     }
 
 
@@ -54,7 +58,11 @@ public class LogServiceImpl implements LogService {
         } catch (Exception e) {
             throw new RuntimeException("Failed to index log in Lucene", e);
         }
-        return LogMapper.toResponse(savedLog);
+        LogResponse response = LogMapper.toResponse(savedLog);
+
+        webSocketService.sendLog(response);
+
+        return response;
     }
 
     @Override
