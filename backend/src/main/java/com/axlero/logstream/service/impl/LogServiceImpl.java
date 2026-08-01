@@ -6,6 +6,7 @@ import com.axlero.logstream.entity.Log;
 import com.axlero.logstream.exception.ResourceNotFoundException;
 import com.axlero.logstream.mapper.LogMapper;
 import com.axlero.logstream.repository.LogRepository;
+import com.axlero.logstream.service.AlertService;
 import com.axlero.logstream.service.LogService;
 import org.springframework.stereotype.Service;
 import com.axlero.logstream.dto.request.SearchRequest;
@@ -28,12 +29,16 @@ public class LogServiceImpl implements LogService {
     // here we had use Constructor Injection instead of @Autowired
     private final LogRepository logRepository;
     private final LuceneIndexService luceneIndexService;
+    private final AlertService alertService;
 
-    public LogServiceImpl(LogRepository logRepository,
-                          LuceneIndexService luceneIndexService) {
+    public LogServiceImpl(
+            LogRepository logRepository,
+            LuceneIndexService luceneIndexService,
+            AlertService alertService) {
 
         this.logRepository = logRepository;
         this.luceneIndexService = luceneIndexService;
+        this.alertService = alertService;
     }
 
 
@@ -43,6 +48,7 @@ public class LogServiceImpl implements LogService {
 
         Log log = LogMapper.toEntity(request);
         Log savedLog = logRepository.save(log);
+        alertService.processAlert(savedLog);
         try {
             luceneIndexService.indexLog(savedLog);
         } catch (Exception e) {
