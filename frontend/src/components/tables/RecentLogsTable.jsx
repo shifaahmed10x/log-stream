@@ -8,28 +8,9 @@ import {
   TableRow,
 } from "@mui/material";
 
-const rows = [
-  {
-    time: "10:45:12",
-    level: "INFO",
-    service: "Auth Service",
-    message: "User login successful",
-  },
-  {
-    time: "10:46:21",
-    level: "ERROR",
-    service: "API Gateway",
-    message: "500 Internal Server Error",
-  },
-  {
-    time: "10:47:55",
-    level: "WARNING",
-    service: "Payment",
-    message: "Slow response detected",
-  },
-];
+function RecentLogsTable({ logs }) {
+  console.log(logs);
 
-function RecentLogsTable() {
   return (
     <TableContainer component={Paper} sx={{ mt: 4, bgcolor: "#111827" }}>
       <Table>
@@ -43,12 +24,23 @@ function RecentLogsTable() {
         </TableHead>
 
         <TableBody>
-          {rows.map((row, index) => (
-            <TableRow key={index}>
-              <TableCell sx={{ color: "#D1D5DB" }}>{row.time}</TableCell>
-              <TableCell sx={{ color: "#D1D5DB" }}>{row.level}</TableCell>
-              <TableCell sx={{ color: "#D1D5DB" }}>{row.service}</TableCell>
-              <TableCell sx={{ color: "#D1D5DB" }}>{row.message}</TableCell>
+          {logs.map((log) => (
+            <TableRow key={log.id}>
+              <TableCell sx={{ color: "#D1D5DB" }}>
+                {new Date(log.timestamp).toLocaleTimeString()}
+              </TableCell>
+
+              <TableCell sx={{ color: "#D1D5DB" }}>
+                {log.logLevel}
+              </TableCell>
+
+              <TableCell sx={{ color: "#D1D5DB" }}>
+                {log.serviceName}
+              </TableCell>
+
+              <TableCell sx={{ color: "#D1D5DB" }}>
+                {log.message}
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

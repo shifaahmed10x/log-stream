@@ -1,10 +1,58 @@
 import { Typography, Box } from "@mui/material";
+import { useEffect, useState } from "react";
+
 import StatCard from "../components/cards/StatCard";
 import RecentLogsTable from "../components/tables/RecentLogsTable";
 import LogLevelChart from "../components/charts/LogLevelChart";
 import LogsTimelineChart from "../components/charts/LogsTimelineChart";
 
+import { searchLogs } from "../services/logService";
+
 function Dashboard() {
+  const [searchResponse, setSearchResponse] = useState(null);
+
+  useEffect(() => {
+    loadLogs();
+  }, []);
+
+  const loadLogs = async () => {
+    try {
+      const data = await searchLogs({
+        keyword: "",
+        applicationName: "",
+        serviceName: "",
+        hostName: "",
+        logLevel: "",
+        loggerName: "",
+        threadName: "",
+        startDate: null,
+        endDate: null,
+        page: 0,
+        pageSize: 10,
+        sortBy: "timestamp",
+        sortDirection: "desc",
+      });
+
+      console.log("API Response:", data);
+      setSearchResponse(data);
+    } catch (error) {
+      console.error("API Error:", error);
+    }
+  };
+const logs = searchResponse?.logs || [];
+
+const errorCount = logs.filter(
+  (log) => log.logLevel === "ERROR"
+).length;
+
+const warningCount = logs.filter(
+  (log) => log.logLevel === "WARN"
+).length;
+
+const infoCount = logs.filter(
+  (log) => log.logLevel === "INFO"
+).length;
+
   return (
     <>
       <Typography
@@ -23,12 +71,32 @@ function Dashboard() {
           gap: 3,
         }}
       >
-        <StatCard title="Total Logs" value="12,450" color="#14B8A6" />
-        <StatCard title="Error Logs" value="320" color="#EF4444" />
-        <StatCard title="Warning Logs" value="1,120" color="#F59E0B" />
-        <StatCard title="Info Logs" value="11,010" color="#22C55E" />
+      <StatCard
+        title="Total Logs"
+        value={searchResponse?.totalRecords ?? 0}
+        color="#14B8A6"
+      />
+        <StatCard
+          title="Error Logs"
+          value={errorCount}
+          color="#EF4444"
+        />
+
+        <StatCard
+          title="Warning Logs"
+          value={warningCount}
+          color="#F59E0B"
+        />
+
+        <StatCard
+          title="Info Logs"
+          value={infoCount}
+          color="#22C55E"
+        />
       </Box>
-      <RecentLogsTable/>
+
+      <RecentLogsTable logs={searchResponse?.logs || []} />
+
       <Box
         mt={4}
         sx={{
@@ -47,11 +115,7 @@ function Dashboard() {
             borderRadius: 3,
           }}
         >
-          <Typography
-            variant="h6"
-            color="white"
-            mb={2}
-          >
+          <Typography variant="h6" color="white" mb={2}>
             Log Level Distribution
           </Typography>
 
@@ -65,11 +129,7 @@ function Dashboard() {
             borderRadius: 3,
           }}
         >
-          <Typography
-            variant="h6"
-            color="white"
-            mb={2}
-          >
+          <Typography variant="h6" color="white" mb={2}>
             Log Volume Timeline
           </Typography>
 
