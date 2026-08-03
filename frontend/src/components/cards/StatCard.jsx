@@ -1,46 +1,56 @@
-import { Card, CardContent, Typography, Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 
-function StatCard({ title, value, color }) {
+import GlassCard from "./GlassCard";
+
+function StatCard({
+  title,
+  value,
+  color,
+  icon,
+}) {
   return (
-    <Card
-      sx={{
-        background: "#111827",
-        borderRadius: "16px",
-        color: "#fff",
-        boxShadow: "0 8px 20px rgba(0,0,0,0.25)",
-        transition: "0.3s",
-        "&:hover": {
-          transform: "translateY(-5px)",
-        },
-      }}
-    >
-      <CardContent>
-        <Typography
-          variant="body2"
-          sx={{ color: "#9CA3AF", mb: 1 }}
-        >
-          {title}
-        </Typography>
+    <GlassCard>
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+      >
+        <Box>
 
-        <Box display="flex" alignItems="center" justifyContent="space-between">
           <Typography
-            variant="h4"
-            fontWeight="bold"
+            color="text.secondary"
+            fontSize={14}
+          >
+            {title}
+          </Typography>
+
+          <Typography
+            mt={1}
+            fontWeight={700}
+            fontSize={34}
           >
             {value}
           </Typography>
 
-          <Box
-            sx={{
-              width: 14,
-              height: 14,
-              borderRadius: "50%",
-              bgcolor: color,
-            }}
-          />
         </Box>
-      </CardContent>
-    </Card>
+
+        <Box
+          sx={{
+            width: 58,
+            height: 58,
+            borderRadius: 4,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            bgcolor: `${color}22`,
+            color: color,
+          }}
+        >
+          {icon}
+        </Box>
+
+      </Box>
+    </GlassCard>
   );
 }
 

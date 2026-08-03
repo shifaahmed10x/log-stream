@@ -1,10 +1,11 @@
-import { Box, Typography, Divider, List } from "@mui/material";
+import { Box, Typography, List } from "@mui/material";
 
 import {
   LayoutDashboard,
   Search,
   BarChart3,
   Terminal,
+  Sparkles,
 } from "lucide-react";
 
 import SidebarItem from "./SidebarItem";
@@ -15,62 +16,115 @@ function Sidebar() {
       sx={{
         width: 280,
         minHeight: "100vh",
-        background: "#141414",
+
+        display: "flex",
+        flexDirection: "column",
+
+        background: "rgba(18,18,18,.75)",
+        backdropFilter: "blur(20px)",
+
         borderRight: "1px solid rgba(255,255,255,.06)",
-        px: 2.5,
-        py: 3,
+
+        px: 3,
+        py: 4,
       }}
     >
       {/* Logo */}
 
-      <Typography
-        variant="h4"
-        fontWeight={800}
+      <Box
         sx={{
-          color: "#F8F8F8",
-          letterSpacing: 1,
-          px: 2,
-          mb: 4,
+          display: "flex",
+          alignItems: "center",
+          gap: 1.5,
+          mb: 5,
         }}
       >
-        LOG STREAM
-      </Typography>
+        <Box
+          sx={{
+            width: 42,
+            height: 42,
+            borderRadius: "14px",
 
-      <Divider
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+
+            background:
+            "linear-gradient(135deg,#8B5CF6,#A855F7)",
+
+            boxShadow:
+            "0 12px 35px rgba(139,92,246,.35)",
+          }}
+        >
+          <Sparkles size={20} color="white" />
+        </Box>
+
+        <Box>
+          <Typography
+            sx={{
+              fontWeight: 700,
+              fontSize: 20,
+              color: "text.primary",
+            }}
+          >
+            LogStream
+          </Typography>
+
+          <Typography
+            sx={{
+              fontSize: 12,
+              color: "text.secondary",
+            }}
+          >
+            Distributed Analytics
+          </Typography>
+        </Box>
+      </Box>
+
+      <List
         sx={{
-          borderColor: "rgba(255,255,255,.06)",
-          mb: 4,
+          display: "flex",
+          flexDirection: "column",
+          gap: 1,
         }}
-      />
-
-      <List>
-
+      >
         <SidebarItem
           title="Dashboard"
           to="/"
-          icon={<LayoutDashboard size={20} />}
+          icon={<LayoutDashboard size={18} />}
         />
 
         <SidebarItem
           title="Search Logs"
           to="/search"
-          icon={<Search size={20} />}
+          icon={<Search size={18} />}
         />
 
         <SidebarItem
           title="Analytics"
           to="/analytics"
-          icon={<BarChart3 size={20} />}
+          icon={<BarChart3 size={18} />}
         />
 
         <SidebarItem
           title="Live Tail"
           to="/live-tail"
-          icon={<Terminal size={20} />}
+          icon={<Terminal size={18} />}
         />
-
-
       </List>
+
+      <Box sx={{ flexGrow: 1 }} />
+
+      <Typography
+        sx={{
+          textAlign: "center",
+          color: "text.secondary",
+          fontSize: 12,
+          opacity: 0.55,
+        }}
+      >
+        LogStream v1.0
+      </Typography>
     </Box>
   );
 }

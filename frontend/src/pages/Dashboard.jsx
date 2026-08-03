@@ -1,7 +1,17 @@
+import DashboardHero from "../components/cards/DashboardHero";
 import { Typography, Box } from "@mui/material";
 import { useEffect, useState } from "react";
 
+import {
+  Activity,
+  CircleAlert,
+  TriangleAlert,
+  Info,
+} from "lucide-react";
+
 import StatCard from "../components/cards/StatCard";
+import GlassCard from "../components/cards/GlassCard";
+
 import RecentLogsTable from "../components/tables/RecentLogsTable";
 import LogLevelChart from "../components/charts/LogLevelChart";
 import LogsTimelineChart from "../components/charts/LogsTimelineChart";
@@ -33,69 +43,82 @@ function Dashboard() {
         sortDirection: "desc",
       });
 
-      console.log("API Response:", data);
       setSearchResponse(data);
     } catch (error) {
-      console.error("API Error:", error);
+      console.error(error);
     }
   };
-const logs = searchResponse?.logs || [];
 
-const errorCount = logs.filter(
-  (log) => log.logLevel === "ERROR"
-).length;
+  const logs = searchResponse?.logs || [];
 
-const warningCount = logs.filter(
-  (log) => log.logLevel === "WARN"
-).length;
+  const errorCount = logs.filter(
+    (log) => log.logLevel === "ERROR"
+  ).length;
 
-const infoCount = logs.filter(
-  (log) => log.logLevel === "INFO"
-).length;
+  const warningCount = logs.filter(
+    (log) => log.logLevel === "WARN"
+  ).length;
+
+  const infoCount = logs.filter(
+    (log) => log.logLevel === "INFO"
+  ).length;
 
   return (
     <>
-      <Typography
-        variant="h3"
-        fontWeight="bold"
-        color="white"
-        mb={4}
-      >
-        Dashboard
-      </Typography>
+      <DashboardHero
+          totalLogs={searchResponse?.totalRecords ?? 0}
+      />
+
+      {/* Stats */}
 
       <Box
         sx={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+          gridTemplateColumns: {
+            xs: "1fr",
+            md: "repeat(4,1fr)",
+          },
           gap: 3,
         }}
       >
-      <StatCard
-        title="Total Logs"
-        value={searchResponse?.totalRecords ?? 0}
-        color="#14B8A6"
-      />
         <StatCard
-          title="Error Logs"
+          title="Total Logs"
+          value={searchResponse?.totalRecords ?? 0}
+          color="#7C3AED"
+          icon={<Activity size={24} />}
+        />
+
+        <StatCard
+          title="Errors"
           value={errorCount}
           color="#EF4444"
+          icon={<CircleAlert size={24} />}
         />
 
         <StatCard
-          title="Warning Logs"
+          title="Warnings"
           value={warningCount}
           color="#F59E0B"
+          icon={<TriangleAlert size={24} />}
         />
 
         <StatCard
-          title="Info Logs"
+          title="Info"
           value={infoCount}
-          color="#22C55E"
+          color="#10B981"
+          icon={<Info size={24} />}
         />
       </Box>
 
-      <RecentLogsTable logs={searchResponse?.logs || []} />
+      {/* Recent Logs */}
+
+      <Box mt={4}>
+        <GlassCard>
+          <RecentLogsTable logs={logs} />
+        </GlassCard>
+      </Box>
+
+      {/* Charts */}
 
       <Box
         mt={4}
@@ -108,33 +131,33 @@ const infoCount = logs.filter(
           gap: 3,
         }}
       >
-        <Box
-          sx={{
-            background: "#111827",
-            p: 3,
-            borderRadius: 3,
-          }}
-        >
-          <Typography variant="h6" color="white" mb={2}>
+        <GlassCard>
+          <Typography
+            variant="h6"
+            sx={{
+              mb: 3,
+              fontWeight: 600,
+            }}
+          >
             Log Level Distribution
           </Typography>
 
           <LogLevelChart />
-        </Box>
+        </GlassCard>
 
-        <Box
-          sx={{
-            background: "#111827",
-            p: 3,
-            borderRadius: 3,
-          }}
-        >
-          <Typography variant="h6" color="white" mb={2}>
+        <GlassCard>
+          <Typography
+            variant="h6"
+            sx={{
+              mb: 3,
+              fontWeight: 600,
+            }}
+          >
             Log Volume Timeline
           </Typography>
 
           <LogsTimelineChart />
-        </Box>
+        </GlassCard>
       </Box>
     </>
   );

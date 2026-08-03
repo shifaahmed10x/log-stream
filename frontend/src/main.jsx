@@ -1,19 +1,23 @@
 import global from "global";
 
 window.global = global;
+
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { ThemeProvider, CssBaseline } from "@mui/material";
 
-import App from "./App.jsx";
-import theme from "./theme/theme.js";
+import { CssBaseline } from "@mui/material";
+
+import App from "./App";
+
+import { CustomThemeProvider } from "./context/ThemeContext";
+
 import "./styles/global.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <ThemeProvider theme={theme}>
+    <CustomThemeProvider>
       <CssBaseline />
       <App />
-    </ThemeProvider>
+    </CustomThemeProvider>
   </React.StrictMode>
 );

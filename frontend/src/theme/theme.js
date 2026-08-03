@@ -1,64 +1,41 @@
 import { createTheme } from "@mui/material/styles";
 
-const theme = createTheme({
-  palette: {
-    mode: "dark",
+export const createAppTheme = (palette) =>
 
-    primary: {
-      main: "#0F766E",
-    },
+    createTheme({
 
-    secondary: {
-      main: "#14B8A6",
-    },
+        palette,
 
-    success: {
-      main: "#22C55E",
-    },
+        shape: {
 
-    warning: {
-      main: "#F59E0B",
-    },
+            borderRadius: 18,
 
-    error: {
-      main: "#EF4444",
-    },
+        },
 
-    background: {
-      default: "#0B1120",
-      paper: "#111827",
-    },
+        typography: {
 
-    text: {
-      primary: "#F9FAFB",
-      secondary: "#9CA3AF",
-    },
-  },
+            fontFamily: "Manrope",
 
-  shape: {
-    borderRadius: 16,
-  },
+            h4: {
 
-  typography: {
-    fontFamily: "Inter, sans-serif",
+                fontWeight: 700,
 
-    h4: {
-      fontWeight: 700,
-    },
+            },
 
-    h5: {
-      fontWeight: 600,
-    },
+            h5: {
 
-    h6: {
-      fontWeight: 600,
-    },
+                fontWeight: 700,
 
-    button: {
-      textTransform: "none",
-      fontWeight: 600,
-    },
-  },
-});
+            },
 
-export default theme;
+            button: {
+
+                textTransform: "none",
+
+                fontWeight: 600,
+
+            },
+
+        },
+
+    });

@@ -1,4 +1,9 @@
-import { ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
+import {
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+} from "@mui/material";
+
 import { NavLink } from "react-router-dom";
 
 function SidebarItem({ title, to, icon }) {
@@ -7,32 +12,39 @@ function SidebarItem({ title, to, icon }) {
       component={NavLink}
       to={to}
       sx={{
-        color: "#B8B8B8",
+        height: 54,
+
         borderRadius: "16px",
-        mb: 1.2,
-        py: 1.5,
-        px: 1,
+
+        color: "text.secondary",
 
         transition: ".25s",
 
+        "& .MuiListItemText-primary": {
+          fontWeight: 500,
+        },
+
         "&.active": {
-          background:
-            "linear-gradient(135deg,#7C3AED,#9333EA)",
           color: "#fff",
-          boxShadow: "0 10px 30px rgba(124,58,237,.35)",
+
+          background:
+          "linear-gradient(135deg,#8B5CF6,#A855F7)",
+
+          boxShadow:
+            "0 10px 30px rgba(124,58,237,.25)",
         },
 
         "&:hover": {
           background: "rgba(255,255,255,.05)",
-          color: "#fff",
-          transform: "translateX(4px)",
+
+          color: "text.primary",
         },
       }}
     >
       <ListItemIcon
         sx={{
           color: "inherit",
-          minWidth: 42,
+          minWidth: 38,
         }}
       >
         {icon}

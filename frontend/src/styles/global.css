@@ -1,0 +1,100 @@
+/* ===========================
+   Google Font
+=========================== */
+
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap");
+
+/* ===========================
+   Reset
+=========================== */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ===========================
+   Root Theme
+=========================== */
+
+:root {
+
+  --background: #101010;
+
+  --surface: #171717;
+
+  --card: rgba(255,255,255,.04);
+
+  --border: rgba(255,255,255,.06);
+
+  --primary: #8B5CF6;
+
+  --primary-light: #A855F7;
+
+  --text: #F8F8F8;
+
+  --text-secondary: #A1A1AA;
+
+}
+
+/* ===========================
+   Body
+=========================== */
+
+body {
+
+  font-family: "Manrope", sans-serif;
+
+  background: var(--background);
+
+  color: var(--text);
+
+  overflow-x: hidden;
+
+}
+
+/* ===========================
+   Scrollbar
+=========================== */
+
+::-webkit-scrollbar {
+
+  width: 8px;
+
+}
+
+::-webkit-scrollbar-track {
+
+  background: #121212;
+
+}
+
+::-webkit-scrollbar-thumb {
+
+  background: #2A2A2A;
+
+  border-radius: 20px;
+
+}
+
+::-webkit-scrollbar-thumb:hover {
+
+  background: #8B5CF6;
+
+}
+
+/* ===========================
+   Smooth Animation
+=========================== */
+
+* {
+
+  transition:
+      background .25s ease,
+      color .25s ease,
+      border-color .25s ease,
+      box-shadow .25s ease,
+      transform .25s ease;
+
+}
