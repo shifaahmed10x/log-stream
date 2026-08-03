@@ -1,9 +1,14 @@
 package com.axlero.logstream.controller;
 
 import com.axlero.logstream.dto.request.LogRequest;
+import com.axlero.logstream.dto.request.SearchRequest;
 import com.axlero.logstream.dto.response.LogResponse;
+import com.axlero.logstream.dto.response.SearchResponse;
 import com.axlero.logstream.service.LogService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,14 +16,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import io.swagger.v3.oas.annotations.tags.Tag;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import com.axlero.logstream.dto.request.SearchRequest;
-import com.axlero.logstream.dto.response.SearchResponse;
-import org.springframework.web.bind.annotation.RequestParam;
-
 @RestController
+@CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/api/logs")
 @Tag(
         name = "Log Management",
@@ -81,6 +80,29 @@ public class LogController {
     }
 
     @Operation(
+            summary = "Update log",
+            description = "Updates an existing log entry"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Log updated successfully"
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Log not found"
+            )
+    })
+    @PutMapping("/{id}")
+    public ResponseEntity<LogResponse> updateLog(
+            @PathVariable Long id,
+            @Valid @RequestBody LogRequest request) {
+
+        LogResponse response = logService.updateLog(id, request);
+        return ResponseEntity.ok(response);
+    }
+
+    @Operation(
             summary = "Delete log",
             description = "Deletes a log entry by its ID"
     )
@@ -101,44 +123,39 @@ public class LogController {
     }
 
     @Operation(
-            summary = "Update log",
-            description = "Updates an existing log entry"
-    )
-    @ApiResponses({
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Log updated successfully"
-            ),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Log not found"
-            )
-    })
-    @PutMapping("/{id}")
-    public ResponseEntity<LogResponse> updateLog(@PathVariable Long id, @Valid @RequestBody LogRequest request) {
-        LogResponse response = logService.updateLog(id, request);
-        return ResponseEntity.ok(response);
-    }
-
-    @Operation(
             summary = "Search Logs",
             description = "Search logs using keyword, filters, sorting and pagination"
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Logs retrieved successfully"),
-            @ApiResponse(responseCode = "400", description = "Invalid search request")
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Logs retrieved successfully"
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Invalid search request"
+            )
     })
     @PostMapping("/search")
-    public ResponseEntity<SearchResponse> searchLogs(@Valid @RequestBody SearchRequest request) {
+    public ResponseEntity<SearchResponse> searchLogs(
+            @Valid @RequestBody SearchRequest request) {
+
         SearchResponse response = logService.searchLogs(request);
         return ResponseEntity.ok(response);
     }
 
+    @Operation(
+            summary = "Search logs by message",
+            description = "Performs Apache Lucene full-text search on log messages"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Matching logs retrieved successfully"
+    )
     @GetMapping("/search/message")
     public ResponseEntity<List<LogResponse>> searchMessage(
             @RequestParam String keyword) {
 
         return ResponseEntity.ok(logService.searchMessage(keyword));
     }
-
 }

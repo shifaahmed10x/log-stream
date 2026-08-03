@@ -1,33 +1,30 @@
 package com.axlero.logstream.service.impl;
 
 import com.axlero.logstream.dto.request.LogRequest;
+import com.axlero.logstream.dto.request.SearchRequest;
 import com.axlero.logstream.dto.response.LogResponse;
+import com.axlero.logstream.dto.response.SearchResponse;
 import com.axlero.logstream.entity.Log;
 import com.axlero.logstream.exception.ResourceNotFoundException;
 import com.axlero.logstream.mapper.LogMapper;
 import com.axlero.logstream.repository.LogRepository;
 import com.axlero.logstream.service.AlertService;
 import com.axlero.logstream.service.LogService;
-import org.springframework.stereotype.Service;
-import com.axlero.logstream.dto.request.SearchRequest;
-import com.axlero.logstream.dto.response.SearchResponse;
+import com.axlero.logstream.service.LuceneIndexService;
+import com.axlero.logstream.service.WebSocketService;
 import com.axlero.logstream.specification.LogSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
-import com.axlero.logstream.service.LuceneIndexService;
-import com.axlero.logstream.service.WebSocketService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-/*
-        Implemented LogService interface
-*/
 @Service
 public class LogServiceImpl implements LogService {
-    // here we had use Constructor Injection instead of @Autowired
+
     private final LogRepository logRepository;
     private final LuceneIndexService luceneIndexService;
     private final AlertService alertService;
@@ -45,19 +42,20 @@ public class LogServiceImpl implements LogService {
         this.webSocketService = webSocketService;
     }
 
-
     @Override
-    // saving all log here
     public LogResponse saveLog(LogRequest request) {
 
         Log log = LogMapper.toEntity(request);
         Log savedLog = logRepository.save(log);
+
         alertService.processAlert(savedLog);
+
         try {
             luceneIndexService.indexLog(savedLog);
         } catch (Exception e) {
             throw new RuntimeException("Failed to index log in Lucene", e);
         }
+
         LogResponse response = LogMapper.toResponse(savedLog);
 
         webSocketService.sendLog(response);
@@ -69,7 +67,7 @@ public class LogServiceImpl implements LogService {
     public List<LogResponse> getAllLogs() {
         return logRepository.findAll()
                 .stream()
-                .map(LogMapper::toResponse) // log -> LogMapper.toResponse(log
+                .map(LogMapper::toResponse)
                 .toList();
     }
 
@@ -77,21 +75,29 @@ public class LogServiceImpl implements LogService {
     public LogResponse getLogById(Long id) {
 
         Log log = logRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Log not found with id : " + id));
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Log not found with id : " + id));
 
         return LogMapper.toResponse(log);
     }
 
     @Override
     public void deleteLog(Long id) {
+
         Log log = logRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Log not found with id : " + id));
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Log not found with id : " + id));
+
         logRepository.deleteById(id);
     }
 
     @Override
     public LogResponse updateLog(Long id, LogRequest request) {
-        Log log = logRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Log not found with id : " + id));
+
+        Log log = logRepository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Log not found with id : " + id));
+
         log.setApplicationName(request.getApplicationName());
         log.setServiceName(request.getServiceName());
         log.setHostName(request.getHostName());
@@ -102,8 +108,8 @@ public class LogServiceImpl implements LogService {
         log.setTimestamp(request.getTimestamp());
 
         Log updatedLog = logRepository.save(log);
-        return LogMapper.toResponse(updatedLog);
 
+        return LogMapper.toResponse(updatedLog);
     }
 
     @Override
@@ -138,6 +144,7 @@ public class LogServiceImpl implements LogService {
                 .last(logs.isLast())
                 .build();
     }
+
     @Override
     public List<LogResponse> searchMessage(String keyword) {
 

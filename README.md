@@ -6,7 +6,7 @@ Distributed Log Analytics & Alerting Platform
 ## Team Members
 
 - SHIFA AHMED
-- Member 2
+- Shivam Kashaudhan
 - Member 3
 - Member 4
 - Member 5
