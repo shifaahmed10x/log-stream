@@ -1,26 +1,74 @@
-import { AppBar, Toolbar, Typography, Box, Avatar } from "@mui/material";
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Avatar,
+  Box,
+  IconButton,
+} from "@mui/material";
+
+import { Moon } from "lucide-react";
 
 function Navbar() {
   return (
     <AppBar
-      position="static"
+      position="sticky"
       elevation={0}
       sx={{
-        backgroundColor: "#111827",
-        borderBottom: "1px solid #374151",
+        background: "rgba(20,20,20,.75)",
+        backdropFilter: "blur(18px)",
+        borderBottom: "1px solid rgba(255,255,255,.06)",
       }}
     >
-      <Toolbar sx={{ justifyContent: "space-between" }}>
-        <Typography variant="h5" color="white">
+      <Toolbar
+        sx={{
+          justifyContent: "space-between",
+          height: 76,
+        }}
+      >
+        <Typography
+          variant="h4"
+          fontWeight={700}
+          sx={{
+            color: "#fff",
+          }}
+        >
           Distributed Log Analytics
         </Typography>
 
-        <Box display="flex" alignItems="center" gap={2}>
-          <Typography color="#9CA3AF">
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: 2,
+          }}
+        >
+          <Typography
+            sx={{
+              color: "#8D8D8D",
+            }}
+          >
             {new Date().toLocaleTimeString()}
           </Typography>
 
-          <Avatar sx={{ bgcolor: "#0F766E" }}>
+          <IconButton
+            sx={{
+              color: "#C084FC",
+              bgcolor: "rgba(255,255,255,.05)",
+
+              "&:hover": {
+                bgcolor: "rgba(255,255,255,.08)",
+              },
+            }}
+          >
+            <Moon size={20} />
+          </IconButton>
+
+          <Avatar
+            sx={{
+              bgcolor: "#7C3AED",
+            }}
+          >
             S
           </Avatar>
         </Box>

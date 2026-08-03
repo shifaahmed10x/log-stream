@@ -1,3 +1,6 @@
+import global from "global";
+
+window.global = global;
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { ThemeProvider, CssBaseline } from "@mui/material";

@@ -5,7 +5,6 @@ import {
   Search,
   BarChart3,
   Terminal,
-  Settings,
 } from "lucide-react";
 
 import SidebarItem from "./SidebarItem";
@@ -14,29 +13,35 @@ function Sidebar() {
   return (
     <Box
       sx={{
-        width: 270,
+        width: 280,
         minHeight: "100vh",
-        bgcolor: "#111827",
-        borderRight: "1px solid #1F2937",
-        px: 2,
+        background: "#141414",
+        borderRight: "1px solid rgba(255,255,255,.06)",
+        px: 2.5,
         py: 3,
       }}
     >
       {/* Logo */}
 
       <Typography
-        variant="h5"
-        fontWeight="bold"
-        color="white"
+        variant="h4"
+        fontWeight={800}
         sx={{
+          color: "#F8F8F8",
+          letterSpacing: 1,
           px: 2,
-          mb: 3,
+          mb: 4,
         }}
       >
-        Log Stream
+        LOG STREAM
       </Typography>
 
-      <Divider sx={{ bgcolor: "#374151", mb: 3 }} />
+      <Divider
+        sx={{
+          borderColor: "rgba(255,255,255,.06)",
+          mb: 4,
+        }}
+      />
 
       <List>
 
@@ -64,11 +69,6 @@ function Sidebar() {
           icon={<Terminal size={20} />}
         />
 
-        <SidebarItem
-          title="Settings"
-          to="/settings"
-          icon={<Settings size={20} />}
-        />
 
       </List>
     </Box>
