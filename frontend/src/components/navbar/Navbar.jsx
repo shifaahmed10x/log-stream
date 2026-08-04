@@ -2,7 +2,6 @@ import {
   AppBar,
   Toolbar,
   Typography,
-  Avatar,
   Box,
   IconButton,
 } from "@mui/material";
@@ -88,23 +87,6 @@ function Navbar() {
               <Moon size={18} />
             )}
           </IconButton>
-
-          <Avatar
-            sx={{
-              width: 42,
-              height: 42,
-
-              background:
-                "linear-gradient(135deg,#8B5CF6,#A855F7)",
-
-              fontWeight: 700,
-
-              boxShadow:
-                "0 10px 30px rgba(139,92,246,.35)",
-            }}
-          >
-            S
-          </Avatar>
         </Box>
       </Toolbar>
     </AppBar>

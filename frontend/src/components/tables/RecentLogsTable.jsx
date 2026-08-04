@@ -1,51 +1,106 @@
 import {
-  Paper,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
+  Chip,
 } from "@mui/material";
 
+import GlassCard from "../cards/GlassCard";
+
 function RecentLogsTable({ logs }) {
-  console.log(logs);
-
   return (
-    <TableContainer component={Paper} sx={{ mt: 4, bgcolor: "#111827" }}>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell sx={{ color: "white" }}>Time</TableCell>
-            <TableCell sx={{ color: "white" }}>Level</TableCell>
-            <TableCell sx={{ color: "white" }}>Service</TableCell>
-            <TableCell sx={{ color: "white" }}>Message</TableCell>
-          </TableRow>
-        </TableHead>
+    <GlassCard sx={{ mt: 4 }}>
 
-        <TableBody>
-          {logs.map((log) => (
-            <TableRow key={log.id}>
-              <TableCell sx={{ color: "#D1D5DB" }}>
-                {new Date(log.timestamp).toLocaleTimeString()}
+      <TableContainer>
+
+        <Table>
+
+          <TableHead>
+
+            <TableRow
+              sx={{
+                background: "rgba(255,255,255,.03)",
+              }}
+            >
+              <TableCell sx={{ fontWeight: 700 }}>
+                Time
               </TableCell>
 
-              <TableCell sx={{ color: "#D1D5DB" }}>
-                {log.logLevel}
+              <TableCell sx={{ fontWeight: 700 }}>
+                Level
               </TableCell>
 
-              <TableCell sx={{ color: "#D1D5DB" }}>
-                {log.serviceName}
+              <TableCell sx={{ fontWeight: 700 }}>
+                Service
               </TableCell>
 
-              <TableCell sx={{ color: "#D1D5DB" }}>
-                {log.message}
+              <TableCell sx={{ fontWeight: 700 }}>
+                Message
               </TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+
+          </TableHead>
+
+          <TableBody>
+
+            {logs.map((log) => (
+
+              <TableRow
+                key={log.id}
+                hover
+                sx={{
+                  "&:hover": {
+                    background: "rgba(139,92,246,.05)",
+                  },
+                }}
+              >
+
+                <TableCell>
+                  {new Date(log.timestamp).toLocaleTimeString()}
+                </TableCell>
+
+                <TableCell>
+
+                  <Chip
+                    size="small"
+                    label={log.logLevel}
+                    color={
+                      log.logLevel === "ERROR"
+                        ? "error"
+                        : log.logLevel === "WARN"
+                        ? "warning"
+                        : log.logLevel === "INFO"
+                        ? "success"
+                        : log.logLevel === "DEBUG"
+                        ? "primary"
+                        : "default"
+                    }
+                  />
+
+                </TableCell>
+
+                <TableCell>
+                  {log.serviceName}
+                </TableCell>
+
+                <TableCell>
+                  {log.message}
+                </TableCell>
+
+              </TableRow>
+
+            ))}
+
+          </TableBody>
+
+        </Table>
+
+      </TableContainer>
+
+    </GlassCard>
   );
 }
 
