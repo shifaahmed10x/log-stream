@@ -192,7 +192,7 @@ Distributed-Log-Analytics/
 ## Clone Repository
 
 ```bash
-git clone https://github.com/<your-username>/<repository-name>.git
+git clone https://github.com/shifaahmed10x/log-stream.git
 ```
 
 ---
@@ -370,3 +370,4 @@ https://github.com/shifaahmed10x
 ---
 **Shivam Kashaudhan**
 GitHub: 
+https://github.com/shivam955582
