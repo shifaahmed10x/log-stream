@@ -169,8 +169,17 @@ Distributed-Log-Analytics/
 ---
 
 ## Search
+--ALL 
+<img width="1357" height="602" alt="image" src="https://github.com/user-attachments/assets/b188783c-8993-45c4-86e7-fbddca447078" />
 
-> <img width="1364" height="595" alt="image" src="https://github.com/user-attachments/assets/f79304d0-be5a-4971-b16f-31aa08764f76" />
+-INFO
+<img width="1364" height="595" alt="image" src="https://github.com/user-attachments/assets/f79304d0-be5a-4971-b16f-31aa08764f76" />
+
+-WARN
+<img width="835" height="461" alt="image" src="https://github.com/user-attachments/assets/e202a7a3-8605-4b91-a6fc-dfac14509c02" />
+
+-ERROR
+<img width="828" height="480" alt="image" src="https://github.com/user-attachments/assets/44010a28-974a-445a-9a19-1976cf253579" />
 ---
 
 ## Live Tail
