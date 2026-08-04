@@ -157,27 +157,25 @@ Distributed-Log-Analytics/
 # 📸 Screenshots
 
 ## Dashboard
-
-> Add dashboard screenshot here
+<img width="1363" height="606" alt="image" src="https://github.com/user-attachments/assets/4a463d0d-9ed1-489e-9314-bfb3ac12d590" />
 
 ---
 
 ## Analytics
 
-> Add analytics screenshot here
+> <img width="1365" height="600" alt="image" src="https://github.com/user-attachments/assets/558aeda5-9034-482a-ad2b-d008936b8abd" />
+
 
 ---
 
 ## Search
 
-> Add search page screenshot here
-
+> <img width="1364" height="595" alt="image" src="https://github.com/user-attachments/assets/f79304d0-be5a-4971-b16f-31aa08764f76" />
 ---
 
 ## Live Tail
 
-> Add live tail screenshot here
-
+<img width="1363" height="387" alt="image" src="https://github.com/user-attachments/assets/61d0937b-c492-40e9-9f9a-fb5933a3fd3b" />
 ---
 
 # ⚙️ Installation
