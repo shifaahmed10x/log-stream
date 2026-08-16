@@ -225,6 +225,7 @@ mvn clean install
 
 ```bash
 mvn spring-boot:run
+./mvnw spring-boot:run      
 ```
 
 Backend runs on
